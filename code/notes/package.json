@@ -1,0 +1,27 @@
+{
+  "name": "notes",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "9.1.2",
+    "react": "16.11.0",
+    "react-dom": "16.11.0"
+  },
+  "devDependencies": {
+    "@chakra-ui/core": "^0.4.1",
+    "@emotion/core": "^10.0.22",
+    "@emotion/styled": "^10.0.23",
+    "babel-plugin-styled-components": "^1.10.6",
+    "emoji-mart": "^2.11.1",
+    "emotion-theming": "^10.0.19",
+    "react-explode": "^1.0.2",
+    "react-style-tag": "^2.0.1",
+    "styled-components": "^4.4.1",
+    "styled-media-query": "^2.1.2"
+  }
+}
