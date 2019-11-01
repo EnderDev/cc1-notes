@@ -4,6 +4,7 @@ import { StyledApp } from '../components/app.style';
 import { Flex, Text, IconButton, theme, Stack, Input, Box, Image } from '@chakra-ui/core';
 import { Style } from "react-style-tag";
 import { ThemeProvider } from '@chakra-ui/core';
+import { FiGithub } from 'react-icons/fi';
 
 const Theme = ({ children }) => (
   <ThemeProvider theme={theme} style={{ backgroundColor: '#0d0d0d' }}>
@@ -29,6 +30,10 @@ class Home extends React.Component {
         this.ref.current.value = '';
       })
     }
+  }
+
+  repo() {
+    window.location.href = 'https://github.com/EnderDev/cc1-notes'
   }
 
   render() {
@@ -67,7 +72,9 @@ class Home extends React.Component {
             {this.state.notes.map((i, index) => { return <Note key={index} identif={`note-${index}`}>{i}</Note> })}
           </Stack>
         </StyledApp>
-  
+
+        <IconButton icon={FiGithub} onClick={() => this.repo()} variant="unstyled" backgroundColor="black" color="white" fontSize="23px" isRound={true} border="none" cursor="pointer" position="absolute" top="20px" right="20px" paddingLeft="8px !important" paddingTop="5px" ></IconButton>
+
         <Style>{`
               body {
                 margin: 0;
