@@ -12,6 +12,7 @@ const Theme = ({ children }) => (
   </ThemeProvider>
 )
 
+
 class Home extends React.Component {
 
   constructor(props) {
@@ -26,10 +27,30 @@ class Home extends React.Component {
     if(event.keyCode == 13) {
       this.setState(previousState => ({
         notes: [...previousState.notes, this.ref.current.value]
-      }), () => {
+      }), (notes) => {
+        window.localStorage.setItem(`note-${this.state.notes.length-1}`, this.ref.current.value);
         this.ref.current.value = '';
       })
     }
+  }
+
+  componentDidMount() {
+    var keys = [];
+    Object.keys(window.localStorage).forEach((key) => {
+      const regex = /note-\d+/g;
+      if(regex.test(key)) {
+        if(key.startsWith('note-')) {
+          keys.push(parseInt(key.split("-")[1]));
+        }
+      }
+   });
+   keys = keys.sort();
+   keys.forEach(i => {
+        var key = 'note-' + i;
+        this.setState(previousState => ({
+          notes: [...previousState.notes, localStorage.getItem(key)]
+        }))
+      });
   }
 
   repo() {
@@ -69,7 +90,7 @@ class Home extends React.Component {
           <Stack spacing={5}>
             <Input ref={this.ref} placeholder="What's on your mind?"  onKeyUp={this.addNote} border="1px solid lightgray !important" />
             <Note identif={`note--1`}>👋 Welcome to Notely! Enter your message 👆 up here and then hit enter.<br />Over here you can delete your note and edit your note to something else. 👉</Note>
-            {this.state.notes.map((i, index) => { return <Note key={index} identif={`note-${index}`}>{i}</Note> })}
+            {this.state.notes.map((i, index) => { return <Note key={index} identif={`note-${index}`} >{i}</Note> })}
           </Stack>
         </StyledApp>
 
@@ -89,7 +110,7 @@ class Home extends React.Component {
   }
 }
 
-const Note = ({ children, identif }) => {
+const Note = ({ children, identif, callbackFromParent }) => {
 
   const [editing, setEditing] = React.useState(false);
 
@@ -101,6 +122,8 @@ const Note = ({ children, identif }) => {
         document.getElementById(id).outerHTML = '';
       }
     }, 600);
+    /*  id = 'note-<id here>' */
+    window.localStorage.removeItem(id);
   }
 
   const editNode = (id) => {
@@ -109,6 +132,7 @@ const Note = ({ children, identif }) => {
       document.getElementById(id + '-text').focus()
       setEditing(true);
     } else {
+      window.localStorage.setItem(id, document.getElementById(id + '-text').innerText);
       document.getElementById(id + '-text').setAttribute('contenteditable', false);
       document.getElementById(id + '-text').blur()
       setEditing(false);
